@@ -32,6 +32,8 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.lblExample = new System.Windows.Forms.Label();
+            this.numericUpDownFontSize = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFontSize)).BeginInit();
             this.SuspendLayout();
             // 
             // cbFont
@@ -41,11 +43,13 @@
             this.cbFont.Name = "cbFont";
             this.cbFont.Size = new System.Drawing.Size(479, 21);
             this.cbFont.TabIndex = 0;
+            this.cbFont.SelectedIndexChanged += new System.EventHandler(this.cbFont_SelectedIndexChanged);
             this.cbFont.SelectionChangeCommitted += new System.EventHandler(this.comboBox1_SelectionChangeCommitted);
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(335, 164);
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOK.Location = new System.Drawing.Point(333, 98);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 1;
@@ -55,7 +59,8 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(417, 164);
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(417, 98);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 2;
@@ -73,17 +78,26 @@
             this.lblExample.TabIndex = 3;
             this.lblExample.Text = "Example";
             // 
+            // numericUpDownFontSize
+            // 
+            this.numericUpDownFontSize.Location = new System.Drawing.Point(372, 49);
+            this.numericUpDownFontSize.Name = "numericUpDownFontSize";
+            this.numericUpDownFontSize.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownFontSize.TabIndex = 4;
+            // 
             // Font
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(504, 199);
+            this.ClientSize = new System.Drawing.Size(504, 153);
+            this.Controls.Add(this.numericUpDownFontSize);
             this.Controls.Add(this.lblExample);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.cbFont);
             this.Name = "Font";
             this.Text = "Font";
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFontSize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -95,5 +109,6 @@
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label lblExample;
+        private System.Windows.Forms.NumericUpDown numericUpDownFontSize;
     }
 }

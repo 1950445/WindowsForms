@@ -7,14 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Drawing.Text;
 
 namespace WindowsForms
 {
     public partial class Form1 : Form
     {
-        string font;
+        string font_file;
+        int size;
+        Color foreground;
+        Color background;
         bool show_date;
         bool visible_controls;
+        WindowsForms.Font choose_font;
         public Form1()
         {
             InitializeComponent();
@@ -27,6 +33,38 @@ namespace WindowsForms
             visible_controls = false;
             btnHideControls.Visible = false;
             btnClose.Visible = false;
+
+            choose_font = new WindowsForms.Font(label1.Font);
+            font_file = "";
+            LoadSettings();
+         }
+        public void SaveSettings()
+        {
+            StreamWriter sw = new StreamWriter("Settings.cfg");
+            sw.WriteLine (font_file);
+            sw.WriteLine(label1.Font.Size);
+            sw.WriteLine( label1.ForeColor.ToArgb());
+            sw.WriteLine( label1.BackColor.ToArgb());
+            sw.Close();
+
+        }
+        public void LoadSettings()
+        {
+            MessageBox.Show(this, Directory.GetCurrentDirectory(), "Directory", MessageBoxButtons.OK);
+            StreamReader sr = new StreamReader("Settings.cfg");
+            string font_file = sr.ReadLine();
+             size = Convert.ToInt32(sr.ReadLine());
+            foreground = Color.FromArgb(Convert.ToInt32(sr.ReadLine()));
+             background = Color.FromArgb(Convert.ToInt32(sr.ReadLine()));
+            sr.Close();
+
+            PrivateFontCollection pfc = new PrivateFontCollection();
+            pfc.AddFontFile(font_file);
+            System.Drawing.Font font = new System.Drawing.Font(pfc.Families[0], size);
+            label1.Font = font;
+            label1.ForeColor = foreground;
+            label1.BackColor = background;
+
         }
         private void SetShowDate(bool show_date)
         {
@@ -90,11 +128,13 @@ namespace WindowsForms
         }
         private void btnClose_Click(object sender,EventArgs e)
         {
+            SaveSettings();
             this.Close();
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SaveSettings();
             this.Close(); 
         }
         private void showDateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -111,25 +151,25 @@ namespace WindowsForms
         {
             SetShowDate(cbShowDate.Checked);
         }
-
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             label1_DoubleClick(sender, e);
         }
-
         private void btnFont_Click(object sender, EventArgs e)
         {
-            Font font = new Font();
-            font.ShowDialog(this);
-            label1.Font = font.OldFont;
+            //Font font = new Font(label1.Font)
+            
+            if (choose_font.ShowDialog(this) == DialogResult.OK)
+            {
+                label1.Font = choose_font.OldFont;
+                font_file = choose_font.FontFile;
+            }
         }
-
         private void foregroundToolStripMenuItem_Click(object sender, EventArgs e)
         {
             colorDialog1.ShowDialog(this);
             label1.ForeColor = colorDialog1.Color;
         }
-
         private void backgroundToolStripMenuItem_Click(object sender, EventArgs e)
         {
             colorDialog1.ShowDialog(this);

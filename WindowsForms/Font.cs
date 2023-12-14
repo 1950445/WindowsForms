@@ -9,17 +9,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Text;
-using System.Drawing.Text;
+
 
 namespace WindowsForms
 {
     public partial class Font : Form
     {
-      public System.Drawing.Font NewFont { get;set }
-        public System.Drawing.Font OldFont { get; set }
-
-        public Font()
+        public string FontFile { get; set }
+        public System.Drawing.Font NewFont  { get; set }
+        public System.Drawing.Font OldFont  { get; set }
+        public Font(System.Drawing.Font oldFon)
         {
+            
             InitializeComponent();
             
             //MessageBox.Show(this, currentDirectory, "Current directory", MessageBoxButtons.OK);
@@ -29,8 +30,17 @@ namespace WindowsForms
             foreach (string i in Directory.GetFiles(currentDirectory))
             {
                if(i.Split('\\').Last().Contains(".ttf")) this.cbFont.Items.Add(i.Split('\\').Last());
-            }
 
+                if (i.Split('\\').Last().Contains(".TTF")) this.cbFont.Items.Add(i.Split('\\').Last());
+            }
+            OldFont = OldFont;
+            numericUpDownFontSize.Value = (decimal)OldFont.Size;
+           // MessageBox.Show(this, OldFont.Name, "Font", MessageBoxButtons.OK);
+
+        }
+        public int GetFontSize()
+        {
+            return (int)numericUpDownFontSize.Value;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -41,15 +51,23 @@ namespace WindowsForms
         private void btnOK_Click(object sender, EventArgs e)
         {
             OldFont = NewFont;
+            FontFile = cbFont.SelectedItem.ToString();
             this.Close();
         }
 
         private void comboBox1_SelectionChangeCommitted(object sender, EventArgs e)
         {
             PrivateFontCollection pfs = new PrivateFontCollection();
+            
             pfs.AddFontFile(cbFont.SelectedItem.ToString());
-            NewFont = new System.Drawing.Font(pfs.Families[0], lblExample.Font.Size);
+            NewFont = new System.Drawing.Font(pfs.Families[0],(int)numericUpDownFontSize.Value);
+            //NewFont = new System.Drawing.Font(pfs.Families[0], lblExample.Font.Size);
             lblExample.Font = NewFont;
+        }
+
+        private void cbFont_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
